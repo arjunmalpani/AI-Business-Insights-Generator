@@ -1,8 +1,10 @@
+import json
 from data_loader import DataLoader
 from database import Database
 from cleaner import Cleaner
 from analyzer import Analyzer
 from visulization import Visualizer
+from ai_insights import AIInsights
 
 # Load data
 loader = DataLoader("data/raw/sales.csv")
@@ -93,4 +95,11 @@ visualizer.plot_sales_by_region(sales_by_region_df)
 visualizer.plot_sales_by_segment(sales_by_segment_df)
 visualizer.plot_top_products(top_products_df)
 visualizer.plot_profit_distribution(cleaned_df)
+
+# ------------- AI Insights
+ai = AIInsights()
+formatted_kpis = json.dumps(kpis, indent=4, default=str)
+insights = ai.generate_insights(formatted_kpis)
+ai.save_report(insights)
+
 db.close()

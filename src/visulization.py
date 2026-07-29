@@ -125,4 +125,4 @@ class Visualizer:
 
         plt.savefig("charts/profit_distribution.png")
 
-        plt.show()
+        plt.close()
