@@ -1,0 +1,713 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive Business Intelligence Report</title>
+    <style>
+        /* ==========================================================================
+        DESIGN SYSTEM & VARIABLES
+        ========================================================================== */
+        :root {
+        /* Palette */
+        --bg-body: #f8fafc;
+        --bg-surface: #ffffff;
+        --bg-subtle: #f1f5f9;
+        --bg-accent-light: #eff6ff;
+        
+        --border-light: #e2e8f0;
+        --border-medium: #cbd5e1;
+        --border-accent: #3b82f6;
+        
+        --text-primary: #0f172a;
+        --text-secondary: #475569;
+        --text-muted: #64748b;
+        --text-accent: #1d4ed8;
+
+        /* Brand Accent */
+        --brand-primary: #0f172a;
+        --brand-accent: #2563eb;
+        
+        /* Typography */
+        --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        
+        /* Layout & Elevation */
+        --radius-sm: 6px;
+        --radius-md: 10px;
+        --radius-lg: 14px;
+        --shadow-subtle: 0 1px 3px 0 rgba(15, 23, 42, 0.03), 0 1px 2px -1px rgba(15, 23, 42, 0.03);
+        --shadow-card: 0 4px 6px -1px rgba(15, 23, 42, 0.04), 0 2px 4px -2px rgba(15, 23, 42, 0.03);
+        --shadow-elevation: 0 10px 15px -3px rgba(15, 23, 42, 0.05), 0 4px 6px -4px rgba(15, 23, 42, 0.03);
+        }
+
+        /* ==========================================================================
+        CORE RESET & BASE STYLES
+        ========================================================================== */
+        *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        }
+
+        html {
+        font-size: 16px;
+        background-color: var(--bg-body);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+        font-family: var(--font-family);
+        color: var(--text-primary);
+        line-height: 1.6;
+        background-color: var(--bg-body);
+        padding: 3rem 1.5rem;
+        }
+
+        .report-shell {
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: var(--bg-surface);
+        border: 1px solid var(--border-light);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-elevation);
+        padding: 3.5rem;
+        }
+
+        /* ==========================================================================
+        TYPOGRAPHY & SECTION HEADERS
+        ========================================================================== */
+        .section-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--text-primary);
+        margin-bottom: 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+        text-transform: uppercase;
+        font-size: 0.875rem;
+        letter-spacing: 0.06em;
+        color: var(--text-muted);
+        }
+
+        .section-title::before {
+        content: "";
+        display: inline-block;
+        width: 4px;
+        height: 1.1rem;
+        background-color: var(--brand-accent);
+        border-radius: 2px;
+        }
+
+        /* ==========================================================================
+        HEADER
+        ========================================================================== */
+        .report-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        padding-bottom: 2rem;
+        border-bottom: 2px solid var(--border-light);
+        margin-bottom: 2.5rem;
+        gap: 1.5rem;
+        }
+
+        .brand-meta {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--brand-accent);
+        margin-bottom: 0.5rem;
+        }
+
+        .brand-meta svg {
+        width: 16px;
+        height: 16px;
+        fill: currentColor;
+        }
+
+        .report-title {
+        font-size: 2.25rem;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        color: var(--text-primary);
+        line-height: 1.15;
+        }
+
+        .report-subtitle {
+        font-size: 1rem;
+        color: var(--text-secondary);
+        margin-top: 0.375rem;
+        font-weight: 400;
+        }
+
+        .report-date-badge {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: flex-end;
+        background-color: var(--bg-subtle);
+        border: 1px solid var(--border-light);
+        padding: 0.625rem 1rem;
+        border-radius: var(--radius-md);
+        white-space: nowrap;
+        }
+
+        .date-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-weight: 600;
+        color: var(--text-muted);
+        }
+
+        .date-value {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        }
+
+        /* ==========================================================================
+        EXECUTIVE SUMMARY
+        ========================================================================== */
+        .executive-summary-section {
+        margin-bottom: 3rem;
+        }
+
+        .summary-card-wrapper {
+        background: linear-gradient(180deg, var(--bg-accent-light) 0%, var(--bg-surface) 100%);
+        border: 1px solid #dbeafe;
+        border-left: 4px solid var(--brand-accent);
+        border-radius: var(--radius-md);
+        padding: 1.75rem 2rem;
+        box-shadow: var(--shadow-subtle);
+        color: var(--text-primary);
+        font-size: 1.05rem;
+        line-height: 1.7;
+        }
+
+        .summary-card-wrapper p {
+        margin-bottom: 1rem;
+        }
+
+        .summary-card-wrapper p:last-child {
+        margin-bottom: 0;
+        }
+
+        /* ==========================================================================
+        KPI DASHBOARD & INJECTED STYLES
+        ========================================================================== */
+        .kpi-section {
+        margin-bottom: 3rem;
+        }
+
+        .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.25rem;
+        }
+
+        /* Injected KPI Card Contract Styling */
+        .kpi-grid .kpi-card {
+        background-color: var(--bg-surface);
+        border: 1px solid var(--border-light);
+        border-radius: var(--radius-md);
+        padding: 1.5rem;
+        box-shadow: var(--shadow-card);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .kpi-grid .kpi-card:hover {
+        border-color: var(--border-medium);
+        box-shadow: var(--shadow-elevation);
+        }
+
+        .kpi-grid .kpi-card .kpi-title,
+        .kpi-grid .kpi-card .kpi-label {
+        font-size: 0.775rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-muted);
+        margin-bottom: 0.5rem;
+        }
+
+        .kpi-grid .kpi-card .kpi-value {
+        font-size: 1.875rem;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        color: var(--text-primary);
+        line-height: 1.2;
+        }
+
+        .kpi-grid .kpi-card .kpi-trend,
+        .kpi-grid .kpi-card .kpi-subtext {
+        font-size: 0.825rem;
+        margin-top: 0.75rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        }
+
+        /* ==========================================================================
+        BUSINESS ANALYTICS (CHARTS) & INJECTED STYLES
+        ========================================================================== */
+        .analytics-section {
+        margin-bottom: 3rem;
+        }
+
+        .charts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+        gap: 1.5rem;
+        }
+
+        /* Injected Chart Card Contract Styling */
+        .charts-grid .chart-card {
+        background-color: var(--bg-surface);
+        border: 1px solid var(--border-light);
+        border-radius: var(--radius-md);
+        padding: 1.75rem;
+        box-shadow: var(--shadow-card);
+        display: flex;
+        flex-direction: column;
+        }
+
+        .charts-grid .chart-card h3,
+        .charts-grid .chart-card .chart-title {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        letter-spacing: -0.01em;
+        margin-bottom: 1.25rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--bg-subtle);
+        }
+
+        .charts-grid .chart-card img,
+        .charts-grid .chart-card svg,
+        .charts-grid .chart-card .chart-body {
+        width: 100%;
+        height: auto;
+        max-height: 340px;
+        object-fit: contain;
+        border-radius: var(--radius-sm);
+        }
+
+        /* ==========================================================================
+        AI BUSINESS ANALYSIS & INJECTED STYLES
+        ========================================================================== */
+        .ai-analysis-section {
+        margin-bottom: 3rem;
+        }
+
+        .analysis-container {
+        /* display: flex; */
+        /* grid-template-columns: repeat(auto-fit, minmax(480px, 1fr)); */
+        /* gap: 1.5rem; */
+        }
+
+        /* Injected Section Contract Styling */
+        .analysis-container section {
+        background-color: var(--bg-surface);
+        border: 1px solid var(--border-light);
+        border-radius: var(--radius-md);
+        padding: 1.75rem;
+        box-shadow: var(--shadow-card);
+        }
+
+        .analysis-container section h2,
+        .analysis-container section h3 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        letter-spacing: -0.01em;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        }
+
+        .analysis-container section p {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        line-height: 1.65;
+        margin-bottom: 1rem;
+        }
+
+        .analysis-container section p:last-child {
+        margin-bottom: 0;
+        }
+
+        .analysis-container section ul,
+        .analysis-container section ol {
+        margin-left: 1.25rem;
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        line-height: 1.65;
+        }
+
+        .analysis-container section li {
+        margin-bottom: 0.5rem;
+        }
+
+        .analysis-container section li:last-child {
+        margin-bottom: 0;
+        }
+
+        /* ==========================================================================
+        FOOTER
+        ========================================================================== */
+        .report-footer {
+        border-top: 1px solid var(--border-light);
+        padding-top: 1.75rem;
+        margin-top: 4rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        }
+
+        .footer-brand {
+        font-weight: 600;
+        color: var(--text-secondary);
+        }
+
+        .footer-notice {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        }
+
+        .confidential-tag {
+        background-color: #fef2f2;
+        color: #991b1b;
+        border: 1px solid #fecaca;
+        padding: 0.15rem 0.4rem;
+        border-radius: var(--radius-sm);
+        font-weight: 700;
+        font-size: 0.675rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        }
+
+        /* ==========================================================================
+        RESPONSIVE DESIGN (MEDIA QUERIES)
+        ========================================================================== */
+        @media (max-width: 1024px) {
+        .report-shell {
+            padding: 2.5rem;
+        }
+        }
+
+        @media (max-width: 768px) {
+        body {
+            padding: 0;
+            background-color: var(--bg-surface);
+        }
+
+        .report-shell {
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+            padding: 1.5rem;
+        }
+
+        .report-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .report-date-badge {
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        .charts-grid,
+        .analysis-container {
+            grid-template-columns: 1fr;
+        }
+
+        .kpi-grid {
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        }
+
+        .report-footer {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+        }
+
+        /* ==========================================================================
+        PRINT & PDF EXPORT OPTIMIZATION
+        ========================================================================== */
+        @media print {
+        @page {
+            size: A4 portrait;
+            margin: 12mm 15mm;
+        }
+
+        html, body {
+            background-color: #ffffff !important;
+            color: #000000 !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            font-size: 9.5pt;
+        }
+
+        .report-shell {
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+        }
+
+        .report-header {
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #000000;
+        }
+
+        .report-title {
+            font-size: 1.8pt;
+        }
+
+        .section-title {
+            font-size: 8pt;
+            margin-bottom: 0.75rem;
+        }
+
+        /* Grid Printing Control */
+        .kpi-grid {
+            grid-template-columns: repeat(4, 1fr) !important;
+            gap: 0.75rem !important;
+        }
+
+        .charts-grid,
+        .analysis-container {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 1rem !important;
+        }
+
+        /* Avoid Page Breaks inside components */
+        .kpi-card,
+        .chart-card,
+        .analysis-container section,
+        .summary-card-wrapper {
+            page-break-inside: avoid;
+            break-inside: avoid;
+            box-shadow: none !important;
+            border: 1px solid #cbd5e1 !important;
+            background-color: #ffffff !important;
+        }
+
+        .summary-card-wrapper {
+            border-left: 4pt solid #2563eb !important;
+        }
+
+        .executive-summary-section,
+        .kpi-section,
+        .analytics-section,
+        .ai-analysis-section {
+            margin-bottom: 1.75rem;
+        }
+
+        .report-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            border-top: 1px solid #cbd5e1;
+            padding-top: 0.5rem;
+            margin-top: 0;
+            background: #ffffff;
+        }
+        }
+    </style>
+    </head>
+    <body>
+
+    <div class="report-shell">
+
+        <!-- 1. HEADER -->
+        <header class="report-header">
+        <div class="header-main">
+            <div class="brand-meta">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+            Enterprise BI Analytics
+            </div>
+            <h1 class="report-title">Executive Performance Report</h1>
+            <p class="report-subtitle">Strategic overview of operational metrics, financial health, and AI insights</p>
+        </div>
+        <div class="report-date-badge">
+            <span class="date-label">Reporting Period</span>
+            <span class="date-value">30 July 2026</span>
+        </div>
+        </header>
+
+        <!-- 2. EXECUTIVE SUMMARY -->
+        <section class="executive-summary-section">
+        <h2 class="section-title">Executive Summary</h2>
+        <div class="summary-card-wrapper">
+            <p>Your business is generating solid overall sales with strong customer demand, particularly in the Technology category and the West region. However, a company-wide profit margin of about 12.5 percent reveals that high revenue is not translating into equally high returns. Seasonal spikes at the end of each year drive a large portion of your success, while certain regions and individual months face profitability dips or losses that need immediate attention.</p>
+        </div>
+        </section>
+
+        <!-- 3. KPI DASHBOARD -->
+        <section class="kpi-section">
+        <h2 class="section-title">Key Performance Indicators</h2>
+        <div class="kpi-grid">
+            
+        <div class="kpi-card">
+          <div class="kpi-title">Total Sales</div>
+          <div class="kpi-value">$2,297,200.86</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">Total Profit</div>
+          <div class="kpi-value">$286,397.02</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">Profit Margin</div>
+          <div class="kpi-value">12.47%</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">Total Orders</div>
+          <div class="kpi-value">5,009</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">Total Customers</div>
+          <div class="kpi-value">793</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">Average Order Value</div>
+          <div class="kpi-value">$458.61</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">Top Category</div>
+          <div class="kpi-value">Technology</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">Top Sub Category</div>
+          <div class="kpi-value">Phones</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">Top Region</div>
+          <div class="kpi-value">West</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">Top State</div>
+          <div class="kpi-value">California</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">Worst Region</div>
+          <div class="kpi-value">South</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">Worst State</div>
+          <div class="kpi-value">North Dakota</div>
+        </div>
+        </div>
+        </section>
+
+        <!-- 4. BUSINESS ANALYTICS (CHARTS) -->
+        <section class="analytics-section">
+        <h2 class="section-title">Business Analytics</h2>
+        <div class="charts-grid">
+            
+        <div class="chart-card">
+          <h3 class="chart-title">Monthly Sales Trend</h3>
+          <img src="../charts/monthly_sales.png" alt="Monthly Sales Trend" loading="lazy">
+        </div>
+        <div class="chart-card">
+          <h3 class="chart-title">Monthly Profitability</h3>
+          <img src="../charts/monthly_profit.png" alt="Monthly Profitability" loading="lazy">
+        </div>
+        <div class="chart-card">
+          <h3 class="chart-title">Sales Breakdown by Category</h3>
+          <img src="../charts/sales_by_category.png" alt="Sales Breakdown by Category" loading="lazy">
+        </div>
+        <div class="chart-card">
+          <h3 class="chart-title">Regional Sales Performance</h3>
+          <img src="../charts/sales_by_region.png" alt="Regional Sales Performance" loading="lazy">
+        </div>
+        <div class="chart-card">
+          <h3 class="chart-title">Customer Segment Distribution</h3>
+          <img src="../charts/sales_by_segment.png" alt="Customer Segment Distribution" loading="lazy">
+        </div>
+        <div class="chart-card">
+          <h3 class="chart-title">Top Performing Products</h3>
+          <img src="../charts/top_products.png" alt="Top Performing Products" loading="lazy">
+        </div>
+        </div>
+        </section>
+
+        <!-- 5. AI BUSINESS ANALYSIS -->
+        <section class="ai-analysis-section">
+        <h2 class="section-title">AI Strategic Analysis</h2>
+        <div class="analysis-container">
+            
+        <section>
+          <h3>Business Insights</h3>
+          <ul>
+            <li>Technology leads your product categories in sales, driven heavily by top-selling items like the Canon imageCLASS Copier, showing that customers rely on your business for high-value office equipment.</li>
+            <li>Your sales show a strong and predictable year-end surge every November and December, suggesting that holiday demand or year-end corporate purchasing budgets heavily influence your revenue cycles.</li>
+            <li>The West and East regions generate the lion's share of your sales, leaving the South region trailing significantly behind in overall market performance.</li>
+            <li>Certain months, such as January 2015 and July 2014, experienced negative profits despite ongoing business activity, pointing to potential issues with heavy discounting, high return rates, or unexpected operational costs during those periods.</li>
+          </ul>
+        </section>
+        <section>
+          <h3>Opportunities</h3>
+          <ul>
+            <li>You can capitalize on the massive success of top-selling office machines by bundling them with related supplies and maintenance services to increase your average order value beyond its current level.</li>
+            <li>There is significant room to grow your market presence in the South region and in underperforming states like North Dakota by running targeted local marketing campaigns.</li>
+            <li>You can target your top corporate and home office customer segments with loyalty programs or exclusive deals to turn high-spenders into repeat brand advocates.</li>
+          </ul>
+        </section>
+        <section>
+          <h3>Risks</h3>
+          <ul>
+            <li>A relatively low profit margin leaves your business vulnerable to unexpected cost increases, supply chain disruptions, or aggressive competitor discounting.</li>
+            <li>Relying heavily on year-end sales spikes to drive annual performance creates cash flow gaps during slower months, particularly at the start of the year.</li>
+            <li>Geographic concentration in the West and East regions exposes your business to regional economic downturns or local market saturation.</li>
+          </ul>
+        </section>
+        <section>
+          <h3>Recommendations</h3>
+          <ul>
+            <li>Conduct a thorough pricing and cost audit on low-margin products, especially in the South region and during historically unprofitable months, to ensure every sale contributes positively to your bottom line.</li>
+            <li>Implement targeted promotions and discount controls during slow months like February and January to smooth out seasonal cash flow and maintain better profit margins year-round.</li>
+            <li>Shift marketing and sales efforts toward expanding your customer base in the South region while nurturing relationships with your top customers to build long-term revenue stability.</li>
+          </ul>
+        </section>
+        </div>
+        </section>
+
+        <!-- 6. FOOTER -->
+        <footer class="report-footer">
+        <div class="footer-brand">
+            Enterprise Business Intelligence Dashboard
+        </div>
+        <div class="footer-notice">
+            <span class="confidential-tag">Confidential</span>
+            <span>Generated for Executive Review • 30 July 2026</span>
+        </div>
+        </footer>
+
+    </div>
+
+    </body>
+    </html>

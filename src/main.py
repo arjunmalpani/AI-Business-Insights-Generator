@@ -5,6 +5,7 @@ from cleaner import Cleaner
 from analyzer import Analyzer
 from visulization import Visualizer
 from ai_insights import AIInsights
+from report_generator import ReportGenerator
 
 # Load data
 loader = DataLoader("data/raw/sales.csv")
@@ -100,6 +101,8 @@ visualizer.plot_profit_distribution(cleaned_df)
 ai = AIInsights()
 formatted_kpis = json.dumps(kpis, indent=4, default=str)
 insights = ai.generate_insights(formatted_kpis)
-ai.save_report(insights)
+
+report = ReportGenerator()
+report.generate_html(kpis, insights)
 
 db.close()

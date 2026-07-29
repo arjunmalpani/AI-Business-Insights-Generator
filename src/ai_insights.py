@@ -1,6 +1,7 @@
 from google import genai
 from dotenv import load_dotenv
 from prompts import BUSINESS_PROMPT
+import json
 import os
 
 load_dotenv()
@@ -18,7 +19,8 @@ class AIInsights:
                 model="gemini-3.5-flash-lite",
                 contents=prompt,
             )
-            return response.text
+            print(response.text)
+            return json.loads(response.text)
         except Exception as error:
             return f"Error generating insights: {error}"
 

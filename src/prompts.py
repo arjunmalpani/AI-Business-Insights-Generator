@@ -27,18 +27,35 @@ Guidelines:
 - Never invent numbers or KPIs that are not provided.
 - Do not simply repeat the KPI summary.
 
-Generate the report in Markdown using exactly this structure:
+Return ONLY a valid JSON object.
 
-# Executive Summary
+Use this exact structure:
 
-# Strategic Insights
+{{
+  "executive_summary": "...",
+  "business_insights": [
+    "...",
+    "..."
+  ],
+  "opportunities": [
+    "...",
+    "..."
+  ],
+  "risks": [
+    "...",
+    "..."
+  ],
+  "recommendations": [
+    "...",
+    "..."
+  ]
+}}
 
-# Hidden Patterns
-
-# Opportunities
-
-# Risks
-
-# Action Plan
-
+Rules:
+- Do not use Markdown.
+- Do not wrap the JSON in ```json``` code fences.
+- Return valid JSON only.
+- Use simple business language.
+- Do not invent numbers.
+- Base every statement on the KPI summary.
 """
