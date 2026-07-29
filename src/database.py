@@ -28,3 +28,8 @@ class Database:
         cursor.execute(f"SELECT COUNT(*) FROM {table_name}")
         row_count = cursor.fetchone()[0]
         print(f"Rows in '{table_name}': {row_count}")
+
+    def execute_query(self, query):
+        cursor = self.connection.cursor()
+        cursor.execute(query)
+        return cursor.fetchone()[0]

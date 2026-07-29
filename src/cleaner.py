@@ -27,7 +27,9 @@ class Cleaner:
 
         # standardization columns names
         cleaned_df.columns = (
-            cleaned_df.columns.str.strip().str.lower().str.replace(" ", "_")
+            cleaned_df.columns.str.strip()
+            .str.lower()
+            .str.replace(r"[ -]", "_", regex=True)
         )
         # datatime
         date_columns = ["order_date", "ship_date"]

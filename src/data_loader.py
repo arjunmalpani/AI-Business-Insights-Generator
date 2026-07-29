@@ -37,9 +37,9 @@ class DataLoader:
         print(f"Columns: {columns_size}")
         print(f"Missing Values: {missing_values}")
         print(f"Duplicate Values: {duplicate_rows_value}")
-        print("Columns Names:")
-        for i, col in enumerate(columns_names, start=1):
-            print(f"{i}. {col}")
+        # print("Columns Names:")
+        # for i, col in enumerate(columns_names, start=1):
+        #     print(f"{i}. {col}")
         print("Data Types:")
         print(data_types)
         print(f"Memory Usage: {memory_usage:.2f} MB")
