@@ -2,6 +2,7 @@ from data_loader import DataLoader
 from database import Database
 from cleaner import Cleaner
 from analyzer import Analyzer
+from visulization import Visualizer
 
 # Load data
 loader = DataLoader("data/raw/sales.csv")
@@ -41,6 +42,7 @@ db.verify_row_count(table_name)
 
 # Create Analyzer
 analyzer = Analyzer(db, cleaned_df)
+
 # print(f"Total Sales         : {analyzer.total_sales():,.2f}")
 # print(f"Total Profit        : {analyzer.total_profit():,.2f}")
 # print(f"Profit Margin       : {analyzer.profit_margin():.2f}%")
@@ -74,4 +76,21 @@ print("\n========== KPI SUMMARY ==========\n")
 for key, value in kpis.items():
     print(f"\n{key.upper()}")
     print(value)
+
+# Visualization
+visualizer = Visualizer()
+monthly_sales_df = analyzer.monthly_sales()
+monthly_profit_df = analyzer.monthly_profit()
+sales_by_category_df = analyzer.sales_by_category()
+sales_by_region_df = analyzer.sales_by_region()
+sales_by_segment_df = analyzer.sales_by_segment()
+top_products_df = analyzer.top_products()
+
+visualizer.plot_monthly_sales(monthly_sales_df)
+visualizer.plot_monthly_profit(monthly_profit_df)
+visualizer.plot_sales_by_category(sales_by_category_df)
+visualizer.plot_sales_by_region(sales_by_region_df)
+visualizer.plot_sales_by_segment(sales_by_segment_df)
+visualizer.plot_top_products(top_products_df)
+visualizer.plot_profit_distribution(cleaned_df)
 db.close()
