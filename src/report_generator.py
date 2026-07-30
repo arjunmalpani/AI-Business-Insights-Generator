@@ -139,4 +139,4 @@ class ReportGenerator:
         with open(self.output_path, "w", encoding="utf-8") as file:
             file.write(html)
 
-        print(f"Report successfully generated and saved to {self.output_path}")
+        print(f"Report generated and saved to {self.output_path}")

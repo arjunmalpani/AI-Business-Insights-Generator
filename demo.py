@@ -1,1 +1,0 @@
-print("a equal {}".format("b"))

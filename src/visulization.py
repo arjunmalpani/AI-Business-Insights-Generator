@@ -2,9 +2,6 @@ import matplotlib.pyplot as plt
 
 
 class Visualizer:
-    def __init__(self):
-        pass
-
     def plot_monthly_sales(self, monthly_sales):
         plt.figure(figsize=(12, 6))
 
